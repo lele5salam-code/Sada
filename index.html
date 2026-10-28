@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sada - صدى</title>
+    <title>Sada - نظام صدى التشخيصي الذكي</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,63 +13,139 @@
         }
 
         body {
-            background-color: #f0f4f8;
+            background-color: #eef2f5;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
         }
 
         .phone-card {
             background: #ffffff;
             width: 100%;
-            max-width: 380px;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            padding: 24px;
-            text-align: center;
-        }
-
-        .header-logo {
+            max-width: 410px;
+            border-radius: 28px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
+            flex-direction: column;
+            min-height: 640px;
         }
 
-        .header-logo h1 {
-            color: #008080;
-            font-size: 24px;
-        }
-
-        .user-info {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 20px;
+        /* الهيدر العلوي */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
         }
 
-        .badge-status {
-            background-color: #e6f4ea;
-            color: #1e8e3e;
-            padding: 6px 12px;
-            border-radius: 20px;
+        .header h1 {
+            color: #008080;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bt-status {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background-color: #fee2e2;
+            color: #dc2626;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .bt-connected {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+
+        /* النموذج وإدخال البيانات */
+        .section-title {
             font-size: 14px;
+            color: #008080;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .input-group.full {
+            grid-column: span 2;
+        }
+
+        .input-group label {
+            font-size: 11px;
+            color: #555;
             font-weight: bold;
         }
 
+        .input-group input, .input-group select {
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 13px;
+            outline: none;
+            background-color: #f8fafc;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: #008080;
+            background-color: #fff;
+        }
+
+        /* كارت حالة الطفل السريعة */
+        .patient-card {
+            background: linear-gradient(135deg, #008080, #005a5a);
+            color: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .patient-card .name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .patient-card .details {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 4px;
+            display: flex;
+            gap: 12px;
+        }
+
+        /* الأزرار */
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: none;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -85,9 +161,19 @@
         }
 
         .btn-stop {
-            background-color: #ff4d4f;
+            background-color: #ef4444;
             color: white;
-            margin-top: 15px;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #334155;
+            margin-top: 8px;
+        }
+
+        /* الشاشات */
+        .screen-content {
+            flex: 1;
         }
 
         .waveform-box {
@@ -95,99 +181,319 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            letter-spacing: 4px;
-            color: #e53e3e;
-            margin: 20px 0;
-        }
-
-        .result-box {
-            background-color: #e6f4ea;
-            border: 2px solid #34a853;
+            font-size: 32px;
+            letter-spacing: 6px;
+            color: #ef4444;
+            margin: 15px 0;
+            background: #fef2f2;
             border-radius: 16px;
-            padding: 20px;
-            margin: 20px 0;
         }
 
-        .result-title {
-            color: #1e8e3e;
-            font-size: 20px;
+        /* مربع النتيجة النهائية الكبيرة */
+        .final-status-card {
+            border-radius: 16px;
+            padding: 16px;
+            margin: 10px 0 15px 0;
+            text-align: center;
+            color: white;
             font-weight: bold;
-            margin-bottom: 5px;
         }
 
-        .result-sub {
-            color: #5f6368;
-            font-size: 13px;
+        .status-safe {
+            background: linear-gradient(135deg, #10b981, #059669);
         }
 
-        .hidden {
-            display: none;
+        .status-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
         }
+
+        .status-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .status-title {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .status-desc {
+            font-size: 12px;
+            opacity: 0.95;
+            font-weight: normal;
+        }
+
+        /* جدول بيانات الفحص */
+        .data-table-container {
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            text-align: right;
+        }
+
+        .data-table th {
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+
+        .data-table td {
+            color: #475569;
+        }
+
+        /* شريط الملاحة السفلي */
+        .nav-bar {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 10px;
+            margin-top: auto;
+        }
+
+        .nav-item {
+            font-size: 11px;
+            color: #64748b;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: #008080;
+            font-weight: bold;
+        }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
     <div class="phone-card">
-        <div class="header-logo">
-            <h1>Sada - صدى</h1>
+        <!-- الهيدر -->
+        <div class="header">
+            <h1>🍼 صدى | Sada</h1>
+            <span id="bt-btn" class="bt-status" onclick="toggleBluetooth()">🔗 غير متصل</span>
         </div>
 
-        <!-- الصفحة الرئيسية -->
-        <div id="home-page">
-            <div class="user-info">
-                <div>
-                    <h3 style="color:#333;">عبدالملك</h3>
-                    <p style="color:#777; font-size:12px;">4 أشهر</p>
-                </div>
-                <div>
-                    <span class="badge-status">طبيعي</span>
-                    <p style="font-size: 11px; color: #888; margin-top: 4px;">12 فحصاً</p>
+        <!-- 1. الشاشة الرئيسية: بيانات الطفل -->
+        <div id="home-page" class="screen-content">
+            
+            <div class="patient-card">
+                <div class="name" id="card-name">عبدالملك</div>
+                <div class="details">
+                    <span id="card-age">العمر: 4 أشهر</span> • 
+                    <span id="card-gender">الجنس: ذكر</span> • 
+                    <span id="card-weight">الوزن: 6.2 كجم</span>
                 </div>
             </div>
-            <button class="btn btn-start" onclick="startScan()">ابدأ فحصًا جديدًا</button>
+
+            <div class="section-title">📝 بيانات الطفل الحالية:</div>
+            <div class="form-grid">
+                <div class="input-group full">
+                    <label>الاسم الكامل:</label>
+                    <input type="text" id="child-name" value="عبدالملك" oninput="updateCard()">
+                </div>
+                <div class="input-group">
+                    <label>العمر (بالأشهر):</label>
+                    <input type="number" id="child-age" value="4" oninput="updateCard()">
+                </div>
+                <div class="input-group">
+                    <label>الجنس:</label>
+                    <select id="child-gender" onchange="updateCard()">
+                        <option value="ذكر" selected>ذكر</option>
+                        <option value="أنثى">أنثى</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>الوزن (كجم):</label>
+                    <input type="number" step="0.1" id="child-weight" value="6.2" oninput="updateCard()">
+                </div>
+                <div class="input-group">
+                    <label>تاريخ الفحص:</label>
+                    <input type="date" id="scan-date">
+                </div>
+            </div>
+
+            <button class="btn btn-start" onclick="startScan()">بدء فحص قياس المص ➔</button>
         </div>
 
-        <!-- شاشة جاري الفحص -->
-        <div id="scan-page" class="hidden">
-            <h2 style="color:#333; margin-bottom: 10px;">جارٍ الفحص...</h2>
+        <!-- 2. شاشة جاري الفحص -->
+        <div id="scan-page" class="screen-content hidden" style="text-align: center;">
+            <h2 style="color:#333; margin-top:10px;">جارٍ تسجيل الفحص...</h2>
+            <p style="font-size: 12px; color: #666; margin-top: 4px;">يتم استقبال القراءات من اللهاية الذكية</p>
+
             <div class="waveform-box">〰️〰️〰️〰️</div>
-            <p id="tone-text" style="color:#555; font-weight:bold;">النغمة 3 من 5</p>
-            <p style="font-size: 12px; color: #888; margin-top: 5px;">عبدالملك يمص بنشاط</p>
-            <button class="btn btn-stop" onclick="stopScan()">إيقاف</button>
+
+            <p id="tone-text" style="color:#008080; font-weight:bold; font-size: 15px;">رصد النغمة: 3 من 5</p>
+            <p style="font-size: 12px; color: #888; margin-top: 6px;">حالة المصل: نشط وحركي</p>
+
+            <br>
+            <button class="btn btn-stop" onclick="stopScan()">إيقاف الفحص</button>
         </div>
 
-        <!-- شاشة النتيجة -->
-        <div id="result-page" class="hidden">
-            <h2 style="color:#333;">نتيجة الفحص</h2>
-            <div class="result-box">
-                <div style="font-size: 32px; margin-bottom: 5px;">✔️</div>
-                <div class="result-title">استجابة طبيعية</div>
-                <div class="result-sub">مؤشر مبدئي وليس تشخيصًا</div>
+        <!-- 3. شاشة النتيجة النهائية والجدول -->
+        <div id="result-page" class="screen-content hidden">
+            <h2 style="color:#333; text-align: center; font-size: 18px;">تقرير الفحص النهائي</h2>
+            <p style="font-size: 11px; color: #777; text-align: center;" id="res-child-info">الطفل: عبدالملك (4 أشهر)</p>
+
+            <!-- خانة النتيجة النهائية الواضحة -->
+            <div id="status-card" class="final-status-card status-safe">
+                <div class="status-title" id="status-title">✅ سليم</div>
+                <div class="status-desc" id="status-desc">استجابة طبيعية وإيقاع المص ممتاز متوافق مع المدى الطبيعي</div>
             </div>
-            <button class="btn btn-start" onclick="goHome()">العودة للرئيسية</button>
+
+            <!-- جدول البيانات الحقيقية والقياسات -->
+            <div class="data-table-container">
+                <div class="section-title">📊 تفاصيل القراءات المسجلة:</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>المؤشر</th>
+                            <th>القيمة المسجلة</th>
+                            <th>الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>معدل المص / دقيقة</td>
+                            <td id="val-rate">65 مصة/دقيقة</td>
+                            <td id="st-rate">طبيعي</td>
+                        </tr>
+                        <tr>
+                            <td>متوسط ضغط المص</td>
+                            <td id="val-pressure">12.4 kPa</td>
+                            <td id="st-pressure">ممتاز</td>
+                        </tr>
+                        <tr>
+                            <td>استقرار الإيقاع</td>
+                            <td id="val-rhythm">92%</td>
+                            <td id="st-rhythm">منتظم</td>
+                        </tr>
+                        <tr>
+                            <td>مدة الاختبار</td>
+                            <td id="val-time">45 ثانية</td>
+                            <td id="st-time">مكتمل</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <br>
+            <button class="btn btn-start" onclick="showRandomResult()">تغيير النتيجة للسيبيوليشن 🔄</button>
+            <button class="btn btn-secondary" onclick="goHome()">العودة للرئيسية</button>
         </div>
+
+        <!-- شريط التصفح السفلي -->
+        <div class="nav-bar">
+            <div class="nav-item active" onclick="goHome()">🏠 الرئيسية</div>
+            <div class="nav-item" onclick="startScan()">📊 الفحص</div>
+            <div class="nav-item" onclick="alert('سجل الفحوصات محفوظ في قاعدة البيانات')">📁 السجل</div>
+        </div>
+
     </div>
 
     <script>
+        document.getElementById('scan-date').valueAsDate = new Date();
+
+        function updateCard() {
+            const name = document.getElementById('child-name').value || "عبدالملك";
+            const age = document.getElementById('child-age').value || "0";
+            const gender = document.getElementById('child-gender').value;
+            const weight = document.getElementById('child-weight').value || "0";
+
+            document.getElementById('card-name').innerText = name;
+            document.getElementById('card-age').innerText = `العمر: ${age} أشهر`;
+            document.getElementById('card-gender').innerText = `الجنس: ${gender}`;
+            document.getElementById('card-weight').innerText = `الوزن: ${weight} كجم`;
+        }
+
+        let isBtConnected = false;
+        function toggleBluetooth() {
+            const btBtn = document.getElementById('bt-btn');
+            if(!isBtConnected) {
+                btBtn.innerText = "🟢 متصل باللهاية";
+                btBtn.classList.add('bt-connected');
+                isBtConnected = true;
+                alert("تم الاتصال بالمرسل عبر البلوتوث بنجاح!");
+            } else {
+                btBtn.innerText = "🔗 غير متصل";
+                btBtn.classList.remove('bt-connected');
+                isBtConnected = false;
+            }
+        }
+
         function startScan() {
+            const name = document.getElementById('child-name').value || "الطفل";
+            const age = document.getElementById('child-age').value || "4";
+            document.getElementById('res-child-info').innerText = `الطفل: ${name} (${age} أشهر)`;
+
             document.getElementById('home-page').classList.add('hidden');
             document.getElementById('result-page').classList.add('hidden');
             document.getElementById('scan-page').classList.remove('hidden');
 
-            // محاكاة تحول تلقائي للنتيجة بعد 4 ثوانٍ
             setTimeout(() => {
-                showResult();
-            }, 4000);
+                showResult('safe');
+            }, 3500);
         }
 
         function stopScan() {
             goHome();
         }
 
-        function showResult() {
+        function showResult(type) {
             document.getElementById('scan-page').classList.add('hidden');
+            
+            const card = document.getElementById('status-card');
+            const title = document.getElementById('status-title');
+            const desc = document.getElementById('status-desc');
+
+            // تغيير النتيجة والجدول حسب الحالة
+            if(type === 'safe') {
+                card.className = "final-status-card status-safe";
+                title.innerText = "✅ سليم";
+                desc.innerText = "استجابة طبيعية وإيقاع المص ممتاز متوافق مع المدى الطبيعي";
+
+                document.getElementById('val-rate').innerText = "65 مصة/دقيقة";
+                document.getElementById('st-rate').innerText = "طبيعي";
+                document.getElementById('val-pressure').innerText = "12.4 kPa";
+                document.getElementById('val-rhythm').innerText = "92%";
+            } 
+            else if(type === 'warning') {
+                card.className = "final-status-card status-warning";
+                title.innerText = "⚠️ أعد القراءة";
+                desc.innerText = "القراءة غير منتظمة أو وضعية اللهاية تحركت، يُرجى إعادة الفحص";
+
+                document.getElementById('val-rate').innerText = "38 مصة/دقيقة";
+                document.getElementById('st-rate').innerText = "منخفض";
+                document.getElementById('val-pressure').innerText = "6.1 kPa";
+                document.getElementById('val-rhythm').innerText = "55%";
+            } 
+            else if(type === 'danger') {
+                card.className = "final-status-card status-danger";
+                title.innerText = "❌ يحتاج مراجعة";
+                desc.innerText = "لم يتم تسجيل استجابة كافية، يُنصح بإعادة الفحص أو مراجعة المختص";
+
+                document.getElementById('val-rate').innerText = "12 مصة/دقيقة";
+                document.getElementById('st-rate').innerText = "ضعيف جداً";
+                document.getElementById('val-pressure').innerText = "2.3 kPa";
+                document.getElementById('val-rhythm').innerText = "20%";
+            }
+
             document.getElementById('result-page').classList.remove('hidden');
+        }
+
+        function showRandomResult() {
+            const types = ['safe', 'warning', 'danger'];
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            showResult(randomType);
         }
 
         function goHome() {
