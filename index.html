@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sada - صدى</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .phone-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 380px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            padding: 24px;
+            text-align: center;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .header-logo h1 {
+            color: #008080;
+            font-size: 24px;
+        }
+
+        .user-info {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge-status {
+            background-color: #e6f4ea;
+            color: #1e8e3e;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-start {
+            background-color: #008080;
+            color: white;
+        }
+
+        .btn-start:hover {
+            background-color: #006666;
+        }
+
+        .btn-stop {
+            background-color: #ff4d4f;
+            color: white;
+            margin-top: 15px;
+        }
+
+        .waveform-box {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            letter-spacing: 4px;
+            color: #e53e3e;
+            margin: 20px 0;
+        }
+
+        .result-box {
+            background-color: #e6f4ea;
+            border: 2px solid #34a853;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .result-title {
+            color: #1e8e3e;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .result-sub {
+            color: #5f6368;
+            font-size: 13px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-card">
+        <div class="header-logo">
+            <h1>Sada - صدى</h1>
+        </div>
+
+        <!-- الصفحة الرئيسية -->
+        <div id="home-page">
+            <div class="user-info">
+                <div>
+                    <h3 style="color:#333;">عبدالملك</h3>
+                    <p style="color:#777; font-size:12px;">4 أشهر</p>
+                </div>
+                <div>
+                    <span class="badge-status">طبيعي</span>
+                    <p style="font-size: 11px; color: #888; margin-top: 4px;">12 فحصاً</p>
+                </div>
+            </div>
+            <button class="btn btn-start" onclick="startScan()">ابدأ فحصًا جديدًا</button>
+        </div>
+
+        <!-- شاشة جاري الفحص -->
+        <div id="scan-page" class="hidden">
+            <h2 style="color:#333; margin-bottom: 10px;">جارٍ الفحص...</h2>
+            <div class="waveform-box">〰️〰️〰️〰️</div>
+            <p id="tone-text" style="color:#555; font-weight:bold;">النغمة 3 من 5</p>
+            <p style="font-size: 12px; color: #888; margin-top: 5px;">عبدالملك يمص بنشاط</p>
+            <button class="btn btn-stop" onclick="stopScan()">إيقاف</button>
+        </div>
+
+        <!-- شاشة النتيجة -->
+        <div id="result-page" class="hidden">
+            <h2 style="color:#333;">نتيجة الفحص</h2>
+            <div class="result-box">
+                <div style="font-size: 32px; margin-bottom: 5px;">✔️</div>
+                <div class="result-title">استجابة طبيعية</div>
+                <div class="result-sub">مؤشر مبدئي وليس تشخيصًا</div>
+            </div>
+            <button class="btn btn-start" onclick="goHome()">العودة للرئيسية</button>
+        </div>
+    </div>
+
+    <script>
+        function startScan() {
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('result-page').classList.add('hidden');
+            document.getElementById('scan-page').classList.remove('hidden');
+
+            // محاكاة تحول تلقائي للنتيجة بعد 4 ثوانٍ
+            setTimeout(() => {
+                showResult();
+            }, 4000);
+        }
+
+        function stopScan() {
+            goHome();
+        }
+
+        function showResult() {
+            document.getElementById('scan-page').classList.add('hidden');
+            document.getElementById('result-page').classList.remove('hidden');
+        }
+
+        function goHome() {
+            document.getElementById('scan-page').classList.add('hidden');
+            document.getElementById('result-page').classList.add('hidden');
+            document.getElementById('home-page').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
